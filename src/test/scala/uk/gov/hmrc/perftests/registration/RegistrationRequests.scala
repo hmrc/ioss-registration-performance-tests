@@ -58,4 +58,103 @@ object RegistrationRequests extends ServicesConfiguration {
       .get(s"$baseUrl$route")
 //      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
       .check(status.in(200))
+
+  def getAlreadyRegisteredForIOSS =
+    http("Get Already Registered for IOSS page")
+      .get(s"$baseUrl$route/ioss-registered")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postAlreadyRegisteredForIOSS =
+    http("Post Already Registered for IOSS page")
+      .post(s"$baseUrl$route/ioss-registered")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", false)
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/selling-goods-outside-single-market"))
+
+  def getSellingGoodsOutsideSingleMarket =
+    http("Get Selling Goods Outside Single Market page")
+      .get(s"$baseUrl$route/selling-goods-outside-single-market")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postSellingGoodsOutsideSingleMarket =
+    http("Post Selling Goods Outside Single Market page")
+      .post(s"$baseUrl$route/selling-goods-outside-single-market")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", true)
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/goods-value"))
+
+  def getGoodsValue =
+    http("Get Goods Value page")
+      .get(s"$baseUrl$route/goods-value")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postGoodsValue =
+    http("Post Goods Value page")
+      .post(s"$baseUrl$route/goods-value")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", true)
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/registered-for-vat-in-uk"))
+
+  def getRegisteredForUKVAT =
+    http("Get Registered for VAT in UK page")
+      .get(s"$baseUrl$route/registered-for-vat-in-uk")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postRegisteredForUKVAT =
+    http("Post Registered for VAT in UK page")
+      .post(s"$baseUrl$route/registered-for-vat-in-uk")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", true)
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/ni-based"))
+
+  def getNIBusiness =
+    http("Get Northern Ireland Business page")
+      .get(s"$baseUrl$route/ni-based")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postNIBusiness =
+    http("Post Northern Ireland Business page")
+      .post(s"$baseUrl$route/ni-based")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", false)
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/norway-based"))
+
+  def getNorwegianBusiness =
+    http("Get Norwegian Business page")
+      .get(s"$baseUrl$route/norway-based")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postNorwegianBusiness =
+    http("Post Norwegian Business page")
+      .post(s"$baseUrl$route/norway-based")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", true)
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/register-to-use-service"))
+
+  def getRegisterToUseService =
+    http("Get Register to Use Service page")
+      .get(s"$baseUrl$route/register-to-use-service")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postRegisterToUseService =
+    http("Post Register to Use Service page")
+      .post(s"$baseUrl$route/register-to-use-service")
+      .formParam("csrfToken", "${csrfToken}")
+      .check(status.in(303))
+//      Will change to auth when developed
+      .check(header("Location").is(s"$route"))
+
 }

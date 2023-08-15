@@ -23,9 +23,20 @@ class RegistrationSimulation extends PerformanceTestRunner {
 
   setup("registration", "Registration Journey") withRequests
     (
-      goToAuthLoginPage,
-      upFrontAuthLogin,
-      getRegistrationService
+      getAlreadyRegisteredForIOSS,
+      postAlreadyRegisteredForIOSS,
+      getSellingGoodsOutsideSingleMarket,
+      postSellingGoodsOutsideSingleMarket,
+      getGoodsValue,
+      postGoodsValue,
+      getRegisteredForUKVAT,
+      postRegisteredForUKVAT,
+      getNIBusiness,
+      postNIBusiness,
+      getNorwegianBusiness,
+      postNorwegianBusiness,
+      getRegisterToUseService,
+      postRegisterToUseService
     )
 
   runSimulation()
