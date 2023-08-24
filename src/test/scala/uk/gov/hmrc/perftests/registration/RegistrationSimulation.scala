@@ -36,7 +36,12 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getNorwegianBusiness,
       postNorwegianBusiness,
       getRegisterToUseService,
-      postRegisterToUseService
+      postRegisterToUseService,
+      getAuthorityWizard,
+      postAuthorityWizard,
+      resumeJourney,
+      getConfirmVatDetails,
+      postConfirmVatDetails
     )
 
   runSimulation()
