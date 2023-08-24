@@ -125,7 +125,7 @@ object RegistrationRequests extends ServicesConfiguration {
       .post(s"$baseUrl$route/register-to-use-service")
       .formParam("csrfToken", "${csrfToken}")
       .check(status.in(303))
-  def getAuthorityWizard =
+  def getAuthorityWizard       =
     http("Get Authority Wizard page")
       .get(loginUrl + s"/auth-login-stub/gg-sign-in")
       .check(status.in(200, 303))
