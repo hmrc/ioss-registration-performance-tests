@@ -111,6 +111,7 @@ object RegistrationRequests extends ServicesConfiguration {
       .post(s"$baseUrl$route/register-to-use-service")
       .formParam("csrfToken", "${csrfToken}")
       .check(status.in(303))
+      .check(header("Location").is(s"$route/on-sign-in"))
 
   def getAuthorityWizard       =
     http("Get Authority Wizard page")
