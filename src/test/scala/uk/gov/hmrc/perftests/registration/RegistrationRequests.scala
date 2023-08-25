@@ -30,35 +30,6 @@ object RegistrationRequests extends ServicesConfiguration {
 
   def inputSelectorByName(name: String): Expression[String] = s"input[name='$name']"
 
-  def goToAuthLoginPage =
-    http("Go to Auth login page")
-      .get(loginUrl + s"/auth-login-stub/gg-sign-in")
-      .check(status.in(200, 303))
-
-  def upFrontAuthLogin =
-    http("Enter Auth login credentials ")
-      .post(loginUrl + s"/auth-login-stub/gg-sign-in")
-      .formParam("authorityId", "")
-      .formParam("gatewayToken", "")
-      .formParam("credentialStrength", "strong")
-      .formParam("confidenceLevel", "50")
-      .formParam("affinityGroup", "Organisation")
-      .formParam("email", "user@test.com")
-      .formParam("credentialRole", "User")
-      .formParam("redirectionUrl", baseUrl+route)
-      .formParam("enrolment[0].name", "HMRC-MTD-VAT")
-      .formParam("enrolment[0].taxIdentifier[0].name", "VRN")
-      .formParam("enrolment[0].taxIdentifier[0].value", "${vrn}")
-      .formParam("enrolment[0].state", "Activated")
-      .check(status.in(200, 303))
-      .check(headerRegex("Set-Cookie", """mdtp=(.*)""").saveAs("mdtpCookie"))
-
-  def getRegistrationService =
-    http("Get Registration Service")
-      .get(s"$baseUrl$route")
-//      .check(css("input[name=csrfToken]", "value").saveAs("csrfToken"))
-      .check(status.in(200))
-
   def getAlreadyRegisteredForIOSS =
     http("Get Already Registered for IOSS page")
       .get(s"$baseUrl$route/ioss-registered")
@@ -154,7 +125,48 @@ object RegistrationRequests extends ServicesConfiguration {
       .post(s"$baseUrl$route/register-to-use-service")
       .formParam("csrfToken", "${csrfToken}")
       .check(status.in(303))
-//      Will change to auth when developed
-      .check(header("Location").is(s"$route"))
+  def getAuthorityWizard       =
+    http("Get Authority Wizard page")
+      .get(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .check(status.in(200, 303))
+
+  def postAuthorityWizard =
+    http("Enter Auth login credentials ")
+      .post(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .formParam("authorityId", "")
+      .formParam("gatewayToken", "")
+      .formParam("credentialStrength", "strong")
+      .formParam("confidenceLevel", "50")
+      .formParam("affinityGroup", "Organisation")
+      .formParam("email", "user@test.com")
+      .formParam("credentialRole", "User")
+      .formParam("redirectionUrl", s"$baseUrl$route/on-sign-in")
+      .formParam("enrolment[0].name", "HMRC-MTD-VAT")
+      .formParam("enrolment[0].taxIdentifier[0].name", "VRN")
+      .formParam("enrolment[0].taxIdentifier[0].value", "${vrn}")
+      .formParam("enrolment[0].state", "Activated")
+      .check(status.in(200, 303))
+      .check(headerRegex("Set-Cookie", """mdtp=(.*)""").saveAs("mdtpCookie"))
+
+  def resumeJourney =
+    http("Resume journey")
+      .get(s"$baseUrl$route/on-sign-in")
+      .check(status.in(303))
+
+  def getConfirmVatDetails =
+    http("Get Confirm VAT Details page")
+      .get(s"$baseUrl$route/confirm-vat-details")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postConfirmVatDetails =
+    http("Confirm VAT Details")
+      .post(s"$baseUrl$route/confirm-vat-details")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", "yes")
+      .check(status.in(200, 303))
+      //      Will be updated as development continues
+      .check(header("Location").is(s"$route/ioss-registered"))
 
 }
