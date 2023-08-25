@@ -96,20 +96,6 @@ object RegistrationRequests extends ServicesConfiguration {
     http("Post Northern Ireland Business page")
       .post(s"$baseUrl$route/ni-based")
       .formParam("csrfToken", "${csrfToken}")
-      .formParam("value", false)
-      .check(status.in(303))
-      .check(header("Location").is(s"$route/norway-based"))
-
-  def getNorwegianBusiness =
-    http("Get Norwegian Business page")
-      .get(s"$baseUrl$route/norway-based")
-      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
-      .check(status.in(200))
-
-  def postNorwegianBusiness =
-    http("Post Norwegian Business page")
-      .post(s"$baseUrl$route/norway-based")
-      .formParam("csrfToken", "${csrfToken}")
       .formParam("value", true)
       .check(status.in(303))
       .check(header("Location").is(s"$route/register-to-use-service"))
@@ -125,6 +111,7 @@ object RegistrationRequests extends ServicesConfiguration {
       .post(s"$baseUrl$route/register-to-use-service")
       .formParam("csrfToken", "${csrfToken}")
       .check(status.in(303))
+
   def getAuthorityWizard       =
     http("Get Authority Wizard page")
       .get(loginUrl + s"/auth-login-stub/gg-sign-in")
@@ -140,7 +127,7 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("affinityGroup", "Organisation")
       .formParam("email", "user@test.com")
       .formParam("credentialRole", "User")
-      .formParam("redirectionUrl", s"$baseUrl$route/on-sign-in")
+      .formParam("redirectionUrl", baseUrl + route)
       .formParam("enrolment[0].name", "HMRC-MTD-VAT")
       .formParam("enrolment[0].taxIdentifier[0].name", "VRN")
       .formParam("enrolment[0].taxIdentifier[0].value", "${vrn}")
