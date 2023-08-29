@@ -23,6 +23,8 @@ class RegistrationSimulation extends PerformanceTestRunner {
 
   setup("registration", "Registration Journey") withRequests
     (
+      getAuthorityWizard,
+      postAuthorityWizard,
       getAlreadyRegisteredForIOSS,
       postAlreadyRegisteredForIOSS,
       getSellingGoodsOutsideSingleMarket,
@@ -33,12 +35,8 @@ class RegistrationSimulation extends PerformanceTestRunner {
       postRegisteredForUKVAT,
       getNIBusiness,
       postNIBusiness,
-      getNorwegianBusiness,
-      postNorwegianBusiness,
       getRegisterToUseService,
       postRegisterToUseService,
-      getAuthorityWizard,
-      postAuthorityWizard,
       resumeJourney,
       getConfirmVatDetails,
       postConfirmVatDetails
