@@ -39,7 +39,17 @@ class RegistrationSimulation extends PerformanceTestRunner {
       postRegisterToUseService,
       resumeJourney,
       getConfirmVatDetails,
-      postConfirmVatDetails
+      postConfirmVatDetails,
+      getHasTradingName,
+      postHasTradingName,
+      getTradingName(1),
+      postTradingName(1, "First trading name"),
+      getAddTradingName,
+      postAddTradingName(true, Some(2)),
+      getTradingName(2),
+      postTradingName(2, "2nd trading name"),
+      getAddTradingName,
+      postAddTradingName(false, None)
     )
 
   runSimulation()

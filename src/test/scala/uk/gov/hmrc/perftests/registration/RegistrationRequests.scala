@@ -113,7 +113,7 @@ object RegistrationRequests extends ServicesConfiguration {
       .check(status.in(303))
       .check(header("Location").is(s"$route/on-sign-in"))
 
-  def getAuthorityWizard       =
+  def getAuthorityWizard =
     http("Get Authority Wizard page")
       .get(loginUrl + s"/auth-login-stub/gg-sign-in")
       .check(status.in(200, 303))
@@ -154,7 +154,59 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("csrfToken", "${csrfToken}")
       .formParam("value", "yes")
       .check(status.in(200, 303))
-      //      Will be updated as development continues
-      .check(header("Location").is(s"$route/ioss-registered"))
+      .check(header("Location").is(s"$route/have-uk-trading-name"))
+
+  def getHasTradingName =
+    http("Get Has Trading Name page")
+      .get(s"$baseUrl$route/have-uk-trading-name")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postHasTradingName =
+    http("Post Has Trading Name")
+      .post(s"$baseUrl$route/have-uk-trading-name")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", "true")
+      .check(status.in(200, 303))
+      .check(header("Location").is(s"$route/uk-trading-name/1"))
+
+  def getTradingName(index: Int) =
+    http("Get Trading Name page")
+      .get(s"$baseUrl$route/uk-trading-name/$index")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postTradingName(index: Int, tradingName: String) =
+    http("Enter Trading Name")
+      .post(s"$baseUrl$route/uk-trading-name/$index")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", tradingName)
+      .check(status.in(200, 303))
+      .check(header("Location").is(s"$route/add-uk-trading-name"))
+
+  def getAddTradingName =
+    http("Get Add Trading Name page")
+      .get(s"$baseUrl$route/add-uk-trading-name")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def testAddTradingName(answer: Boolean) =
+    http("Add Trading Name")
+      .post(s"$baseUrl$route/add-uk-trading-name")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", answer)
+      .check(status.in(200, 303))
+
+  def postAddTradingName(answer: Boolean, index: Option[Int]) =
+    if (answer) {
+      testAddTradingName(answer)
+        .check(header("Location").is(s"$route/uk-trading-name/${index.get}"))
+    } else {
+      testAddTradingName(answer)
+      //next section of journey not implemented yet
+    }
 
 }
