@@ -209,4 +209,22 @@ object RegistrationRequests extends ServicesConfiguration {
       //next section of journey not implemented yet
     }
 
+  def getBusinessContactDetails =
+    http("Get Business Contact Details page")
+      .get(s"$baseUrl$route/business-contact-details")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postBusinessContactDetails =
+    http("Enter Business Contact Details")
+      .post(s"$baseUrl$route/business-contact-details")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("fullName", "Trader Name")
+      .formParam("telephoneNumber", "012301230123")
+      .formParam("emailAddress", "trader@testemail.com")
+      .check(status.in(200, 303))
+  //next section of journey not implemented yet
+//      .check(header("Location").is(s"$route/bank-details"))
+
 }
