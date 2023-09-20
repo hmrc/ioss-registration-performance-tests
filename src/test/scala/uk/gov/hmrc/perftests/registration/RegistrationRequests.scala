@@ -224,7 +224,23 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("telephoneNumber", "012301230123")
       .formParam("emailAddress", "trader@testemail.com")
       .check(status.in(200, 303))
-  //next section of journey not implemented yet
-//      .check(header("Location").is(s"$route/bank-details"))
+      .check(header("Location").is(s"$route/bank-details"))
+
+  def getBankDetails =
+    http("Get Bank Details page")
+      .get(s"$baseUrl$route/bank-details")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postBankDetails =
+    http("Enter Bank Details")
+      .post(s"$baseUrl$route/bank-details")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("accountName", "Trader name")
+      .formParam("bic", "ABCDEF2A")
+      .formParam("iban", "GB33BUKB20201555555555")
+      .check(status.in(200, 303))
+      .check(header("Location").is(s"$route/check-your-answers"))
 
 }
