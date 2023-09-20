@@ -49,7 +49,10 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getTradingName(2),
       postTradingName(2, "2nd trading name"),
       getAddTradingName,
-      postAddTradingName(false, None)
+      postAddTradingName(false, None),
+//      Awaiting further implementation
+      getBusinessContactDetails,
+      postBusinessContactDetails
     )
 
   runSimulation()
