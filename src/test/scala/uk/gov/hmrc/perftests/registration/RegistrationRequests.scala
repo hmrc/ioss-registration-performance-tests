@@ -505,7 +505,7 @@ object RegistrationRequests extends ServicesConfiguration {
 
   def postCheckTaxDetails(index: Int) =
     http("Submit Check EU VAT Details")
-      .post(s"$baseUrl$route/check-tax-details/$index")
+      .post(s"$baseUrl$route/check-tax-details/$index?incompletePromptShown=false")
       .formParam("csrfToken", "${csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/add-tax-details"))
@@ -519,7 +519,7 @@ object RegistrationRequests extends ServicesConfiguration {
 
   def testAddTaxDetails(answer: Boolean) =
     http("Answer Add EU VAT Details")
-      .post(s"$baseUrl$route/add-tax-details")
+      .post(s"$baseUrl$route/add-tax-details?incompletePromptShown=false")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
@@ -585,5 +585,20 @@ object RegistrationRequests extends ServicesConfiguration {
       testAddWebsite(answer)
         .check(header("Location").is(s"$route/business-contact-details"))
     }
+
+  def getCheckYourAnswers =
+    http("Get Check Your Answers page")
+      .get(s"$baseUrl$route/check-your-answers")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postCheckYourAnswers =
+    http("Post Check Your Answers page")
+      .post(s"$baseUrl$route/check-your-answers/false")
+      .formParam("csrfToken", "${csrfToken}")
+      .check(status.in(200, 303))
+//      Not implemented yet
+//      .check(header("Location").is(s"$route/successful"))
 
 }
