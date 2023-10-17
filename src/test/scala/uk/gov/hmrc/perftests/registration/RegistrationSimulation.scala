@@ -67,7 +67,7 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getPreviousScheme(2, 1),
       postPreviousScheme(2, 1, "oss"),
       getPreviousOssSchemeNumber(2, 1),
-      postPreviousOssSchemeNumber(2, 1, "SI11223344"),
+      postPreviousOssSchemeNumber(2, 1, "SI44332211"),
       getPreviousSchemeAnswers(2),
       postPreviousSchemeAnswers(2, false),
       getPreviousSchemesOverview,
