@@ -2,7 +2,7 @@
 
 # ioss-registration-performance-tests
 
-Performance test suite for the `<digital service name>`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
+Performance test suite for the `ioss-registration-frontend`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
 
 ## Pre-requisites
 
@@ -17,8 +17,10 @@ docker run --rm -d -p 27017:27017 --name mongo mongo:4.4
 Start `PLATFORM_EXAMPLE_UI_TESTS` services as follows:
 
 ```bash
-sm2 --start PLATFORM_EXAMPLE_UI_TESTS
+sm2 --start IMPORT_ONE_STOP_SHOP_ALL
 ```
+
+Note: to run tests locally, you will need to change **email-verification-enabled** to **false** in **application.conf** in **ioss-registration-frontend** and run that service locally.
 
 ### Logging
 
