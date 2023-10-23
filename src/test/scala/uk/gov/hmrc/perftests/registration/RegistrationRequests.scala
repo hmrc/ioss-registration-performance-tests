@@ -593,12 +593,13 @@ object RegistrationRequests extends ServicesConfiguration {
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
-  def postCheckYourAnswers      =
+  def postCheckYourAnswers =
     http("Post Check Your Answers page")
       .post(s"$baseUrl$route/check-your-answers/false")
       .formParam("csrfToken", "${csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/successful"))
+
   def getRegistrationSuccessful =
     http("Get Registration Successful page")
       .get(s"$baseUrl$route/successful")
