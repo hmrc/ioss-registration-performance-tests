@@ -131,7 +131,8 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getBankDetails,
       postBankDetails,
       getCheckYourAnswers,
-      postCheckYourAnswers
+      postCheckYourAnswers,
+      getRegistrationSuccessful
     )
 
   runSimulation()
