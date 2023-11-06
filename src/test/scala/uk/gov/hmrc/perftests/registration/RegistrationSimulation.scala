@@ -132,7 +132,20 @@ class RegistrationSimulation extends PerformanceTestRunner {
       postBankDetails,
       getCheckYourAnswers,
       postCheckYourAnswers,
-      getRegistrationSuccessful
+      getRegistrationSuccessful,
+      getAuthorityWizard,
+      postAuthorityWizardWithIOSSEnrolment,
+      getAmendJourney,
+      getAmendAddTradingName,
+      postAmendAddTradingName(true),
+      getAmendTradingName(3),
+      postAmendTradingName(3, "3rd trading name amend"),
+      getAmendAddTradingName,
+      postAmendAddTradingName(false),
+      getChangeYourRegistration,
+      postChangeYourRegistration
+//      Not implemented yet
+//      getSuccessfulAmend
     )
 
   runSimulation()
