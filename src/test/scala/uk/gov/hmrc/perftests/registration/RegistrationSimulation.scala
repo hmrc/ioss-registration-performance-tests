@@ -143,9 +143,8 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getAmendAddTradingName,
       postAmendAddTradingName(false),
       getChangeYourRegistration,
-      postChangeYourRegistration
-//      Not implemented yet
-//      getSuccessfulAmend
+      postChangeYourRegistration,
+      getSuccessfulAmend
     )
 
   runSimulation()
