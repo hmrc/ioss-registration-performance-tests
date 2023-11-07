@@ -136,6 +136,28 @@ object RegistrationRequests extends ServicesConfiguration {
       .check(status.in(200, 303))
       .check(headerRegex("Set-Cookie", """mdtp=(.*)""").saveAs("mdtpCookie"))
 
+  def postAuthorityWizardWithIOSSEnrolment =
+    http("Enter Auth login credentials ")
+      .post(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .formParam("authorityId", "")
+      .formParam("gatewayToken", "")
+      .formParam("credentialStrength", "strong")
+      .formParam("confidenceLevel", "50")
+      .formParam("affinityGroup", "Organisation")
+      .formParam("email", "user@test.com")
+      .formParam("credentialRole", "User")
+      .formParam("redirectionUrl", baseUrl + route)
+      .formParam("enrolment[0].name", "HMRC-MTD-VAT")
+      .formParam("enrolment[0].taxIdentifier[0].name", "VRN")
+      .formParam("enrolment[0].taxIdentifier[0].value", "${vrn}")
+      .formParam("enrolment[0].state", "Activated")
+      .formParam("enrolment[1].name", "HMRC-IOSS-ORG")
+      .formParam("enrolment[1].taxIdentifier[0].name", "IOSSNumber")
+      .formParam("enrolment[1].taxIdentifier[0].value", "IM9001234567")
+      .formParam("enrolment[1].state", "Activated")
+      .check(status.in(200, 303))
+      .check(headerRegex("Set-Cookie", """mdtp=(.*)""").saveAs("mdtpCookie"))
+
   def resumeJourney =
     http("Resume journey")
       .get(s"$baseUrl$route/on-sign-in")
@@ -603,6 +625,73 @@ object RegistrationRequests extends ServicesConfiguration {
   def getRegistrationSuccessful =
     http("Get Registration Successful page")
       .get(s"$baseUrl$route/successful")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(status.in(200))
+
+  def getAmendJourney =
+    http("Get Amend Registration Journey")
+      .get(s"$baseUrl$route/start-amend-journey")
+      .check(status.in(303))
+      .check(header("Location").is(s"$route/change-your-registration"))
+
+  def getAmendAddTradingName =
+    http("Get Amend Add Trading Name page")
+      .get(s"$baseUrl$route/add-uk-trading-name?waypoints=amend-your-answers")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def testAmendAddTradingName(answer: Boolean) =
+    http("Add Trading Name")
+      .post(s"$baseUrl$route/add-uk-trading-name?waypoints=amend-your-answers")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", answer)
+      .check(status.in(200, 303))
+
+  def postAmendAddTradingName(answer: Boolean) =
+    if (answer) {
+      testAmendAddTradingName(answer)
+        .check(
+          header("Location").is(s"$route/uk-trading-name/3?waypoints=add-uk-trading-name%2Camend-your-answers")
+        )
+    } else {
+      testAmendAddTradingName(answer)
+        .check(header("Location").is(s"$route/change-your-registration"))
+    }
+
+  def getAmendTradingName(index: Int) =
+    http("Get Trading Name page")
+      .get(s"$baseUrl$route/uk-trading-name/3?waypoints=change-add-uk-trading-name%2Camend-your-answers")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postAmendTradingName(index: Int, tradingName: String) =
+    http("Enter Trading Name")
+      .post(s"$baseUrl$route/uk-trading-name/3?waypoints=change-add-uk-trading-name%2Camend-your-answers")
+      .formParam("csrfToken", "${csrfToken}")
+      .formParam("value", tradingName)
+      .check(status.in(200, 303))
+      .check(header("Location").is(s"$route/add-uk-trading-name?waypoints=amend-your-answers"))
+
+  def getChangeYourRegistration =
+    http("Get Change Your Registration page")
+      .get(s"$baseUrl$route/change-your-registration")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postChangeYourRegistration =
+    http("Post Change Your Registration page")
+      .post(s"$baseUrl$route/change-your-registration?incompletePrompt=false")
+      .formParam("csrfToken", "${csrfToken}")
+      .check(status.in(200, 303))
+//      Not implemented yet
+//      .check(header("Location").is(s"$route/successful-amend"))
+
+  def getSuccessfulAmend =
+    http("Get Successful Amend page")
+      .get(s"$baseUrl$route/successful-amend")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(status.in(200))
 
