@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 HM Revenue & Customs
+ * Copyright 2024 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,9 +132,13 @@ class RegistrationSimulation extends PerformanceTestRunner {
       postBankDetails,
       getCheckYourAnswers,
       postCheckYourAnswers,
-      getRegistrationSuccessful,
+      getRegistrationSuccessful
+    )
+
+  setup("amendRegistration", "Amend Registration Journey") withRequests
+    (
       getAuthorityWizard,
-      postAuthorityWizardWithIOSSEnrolment,
+      postAuthorityWizardWithIOSSEnrolment("IM9001234567"),
       getAmendJourney,
       getAmendAddTradingName,
       postAmendAddTradingName(true),
@@ -145,6 +149,22 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getChangeYourRegistration,
       postChangeYourRegistration,
       getSuccessfulAmend
+    )
+
+  setup("rejoinRegistration", "Rejoin Registration Journey") withRequests
+    (
+      getAuthorityWizard,
+      postAuthorityWizardWithIOSSEnrolment("IM9019999997"),
+      getRejoinJourney,
+      getRejoinAddTradingName,
+      postRejoinAddTradingName(true),
+      getRejoinTradingName(3),
+      postRejoinTradingName(3, "3rd trading name rejoin"),
+      getRejoinAddTradingName,
+      postRejoinAddTradingName(false),
+      getRejoinRegistration,
+      postRejoinRegistration,
+      getSuccessfulRejoin
     )
 
   runSimulation()
