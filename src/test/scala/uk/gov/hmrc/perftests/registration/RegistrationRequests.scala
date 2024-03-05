@@ -443,7 +443,7 @@ object RegistrationRequests extends ServicesConfiguration {
     http("Answer How Do You Operate Page")
       .post(s"$baseUrl$route/how-do-you-operate/$index")
       .formParam("csrfToken", "${csrfToken}")
-      .formParam("value", "fixedEstablishment")
+      .formParam("value", true)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/registration-type/$index"))
 
