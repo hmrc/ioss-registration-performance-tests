@@ -167,5 +167,27 @@ class RegistrationSimulation extends PerformanceTestRunner {
       getSuccessfulRejoin
     )
 
+  setup("amendMultipleIOSSNumberRegistrations", "Amend Multiple IOSS Number Registrations Journey") withRequests
+    (
+      getAuthorityWizard,
+      postAuthorityWizardWithMultipleIOSSEnrolments,
+      getAmendJourney,
+      getChangePreviousRegistrations,
+      postChangePreviousRegistrations("IM9007230001"),
+      getAmendBusinessContactDetails,
+      postAmendBusinessContactDetails,
+      getChangeYourRegistration,
+      postChangeYourRegistration,
+      getSuccessfulAmend,
+      getAmendJourney,
+      getChangePreviousRegistrations,
+      postChangePreviousRegistrations("IM9007230002"),
+      getAmendBankDetails,
+      postAmendBankDetails,
+      getChangeYourRegistration,
+      postChangeYourRegistration,
+      getSuccessfulAmend
+    )
+
   runSimulation()
 }
