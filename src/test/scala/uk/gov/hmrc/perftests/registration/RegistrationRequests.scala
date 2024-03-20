@@ -704,39 +704,39 @@ object RegistrationRequests extends ServicesConfiguration {
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/add-uk-trading-name?waypoints=change-your-registration"))
 
-  def getAmendBusinessContactDetails =
+  def getAmendBusinessContactDetails(waypoint: String) =
     http("Get Amend Business Contact Details page")
-      .get(s"$baseUrl$route/business-contact-details?waypoints=change-your-registration")
+      .get(s"$baseUrl$route/business-contact-details?waypoints=$waypoint")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
-  def postAmendBusinessContactDetails =
+  def postAmendBusinessContactDetails(waypoint: String) =
     http("Enter Amend Business Contact Details")
-      .post(s"$baseUrl$route/business-contact-details?waypoints=change-your-registration")
+      .post(s"$baseUrl$route/business-contact-details?waypoints=$waypoint")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("fullName", "Amended Trader Name")
       .formParam("telephoneNumber", "012301230123")
       .formParam("emailAddress", "amendedtrader@testemail.com")
       .check(status.in(200, 303))
-      .check(header("Location").is(s"$route/change-your-registration"))
+      .check(header("Location").is(s"$route/$waypoint"))
 
-  def getAmendBankDetails =
+  def getAmendBankDetails(waypoint: String) =
     http("Get Amend Bank Details page")
-      .get(s"$baseUrl$route/bank-details?waypoints=change-your-registration")
+      .get(s"$baseUrl$route/bank-details?waypoints=$waypoint")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
-  def postAmendBankDetails =
+  def postAmendBankDetails(waypoint: String) =
     http("Enter Amend Bank Details")
-      .post(s"$baseUrl$route/bank-details?waypoints=change-your-registration")
+      .post(s"$baseUrl$route/bank-details?waypoints=$waypoint")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("accountName", "Amended trader name")
       .formParam("bic", "ABCDEF2A")
       .formParam("iban", "GB33BUKB20201555555555")
       .check(status.in(200, 303))
-      .check(header("Location").is(s"$route/change-your-registration"))
+      .check(header("Location").is(s"$route/$waypoint"))
 
   def getChangeYourRegistration =
     http("Get Change Your Registration page")
@@ -838,5 +838,19 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("value", selection)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/start-amend-previous-journey/?waypoints=change-your-registration"))
+
+  def getChangeAPreviousRegistration =
+    http("Get Change A Previous Registration page")
+      .get(s"$baseUrl$route/change-a-previous-registration")
+      .header("Cookie", "mdtp=${mdtpCookie}")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
+      .check(status.in(200))
+
+  def postChangeAPreviousRegistration =
+    http("Post Change A Previous Registration page")
+      .post(s"$baseUrl$route/change-your-registration?waypoints=change-a-previous-registration&incompletePrompt=false")
+      .formParam("csrfToken", "${csrfToken}")
+      .check(status.in(200, 303))
+      .check(header("Location").is(s"$route/successful-amend"))
 
 }
