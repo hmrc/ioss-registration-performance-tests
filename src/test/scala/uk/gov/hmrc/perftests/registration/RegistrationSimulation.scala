@@ -178,15 +178,13 @@ class RegistrationSimulation extends PerformanceTestRunner {
       postAmendBusinessContactDetails("change-a-previous-registration"),
       getChangeAPreviousRegistration,
       postChangeAPreviousRegistration,
-      getSuccessfulAmend,
       getAmendJourney,
       getChangePreviousRegistrations,
       postChangePreviousRegistrations("IM9007230002"),
       getAmendBankDetails("change-a-previous-registration"),
       postAmendBankDetails("change-a-previous-registration"),
       getChangeAPreviousRegistration,
-      postChangeAPreviousRegistration,
-      getSuccessfulAmend
+      postChangeAPreviousRegistration
     )
 
   runSimulation()
