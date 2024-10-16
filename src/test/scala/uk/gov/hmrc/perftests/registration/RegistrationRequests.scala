@@ -276,18 +276,18 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("telephoneNumber", "012301230123")
       .formParam("emailAddress", "trader@testemail.com")
       .check(status.in(200, 303))
-      .check(header("Location").is(s"$route/bank-details"))
+      .check(header("Location").is(s"$route/bank-account-details"))
 
   def getBankDetails =
     http("Get Bank Details page")
-      .get(s"$baseUrl$route/bank-details")
+      .get(s"$baseUrl$route/bank-account-details")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postBankDetails =
     http("Enter Bank Details")
-      .post(s"$baseUrl$route/bank-details")
+      .post(s"$baseUrl$route/bank-account-details")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("accountName", "Trader name")
       .formParam("bic", "ABCDEF2A")
@@ -460,33 +460,33 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("csrfToken", "${csrfToken}")
       .formParam("value", countryCode)
       .check(status.in(200, 303))
-      .check(header("Location").is(s"$route/how-do-you-operate/$index"))
+      .check(header("Location").is(s"$route/eu-fixed-establishment/$index"))
 
   def getHowDoYouOperate(index: Int) =
     http("Get How Do You Operate page")
-      .get(s"$baseUrl$route/how-do-you-operate/$index")
+      .get(s"$baseUrl$route/eu-fixed-establishment/$index")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postHowDoYouOperate(index: Int) =
     http("Answer How Do You Operate Page")
-      .post(s"$baseUrl$route/how-do-you-operate/$index")
+      .post(s"$baseUrl$route/eu-fixed-establishment/$index")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("value", true)
       .check(status.in(200, 303))
-      .check(header("Location").is(s"$route/registration-type/$index"))
+      .check(header("Location").is(s"$route/registration-tax-type/$index"))
 
   def getRegistrationType(index: Int) =
     http("Get Registration Type page")
-      .get(s"$baseUrl$route/registration-type/$index")
+      .get(s"$baseUrl$route/registration-tax-type/$index")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testRegistrationType(index: Int, registrationType: String) =
     http("Answer Registration Type Page")
-      .post(s"$baseUrl$route/registration-type/$index")
+      .post(s"$baseUrl$route/registration-tax-type/$index")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("value", registrationType)
       .check(status.in(200, 303))
@@ -497,7 +497,7 @@ object RegistrationRequests extends ServicesConfiguration {
         .check(header("Location").is(s"$route/eu-vat-number/$index"))
     } else {
       testRegistrationType(index, registrationType)
-        .check(header("Location").is(s"$route/eu-tax-number/$index"))
+        .check(header("Location").is(s"$route/eu-tax-identification-number/$index"))
     }
 
   def getEuVatNumber(index: Int) =
@@ -587,14 +587,14 @@ object RegistrationRequests extends ServicesConfiguration {
 
   def getEuTaxReference(index: Int) =
     http("Get EU Tax Reference page")
-      .get(s"$baseUrl$route/eu-tax-number/$index")
+      .get(s"$baseUrl$route/eu-tax-identification-number/$index")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postEuTaxReference(index: Int, taxReference: String) =
     http("Enter EU Tax Reference")
-      .post(s"$baseUrl$route/eu-tax-number/$index")
+      .post(s"$baseUrl$route/eu-tax-identification-number/$index")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("value", taxReference)
       .check(status.in(200, 303))
@@ -723,14 +723,14 @@ object RegistrationRequests extends ServicesConfiguration {
 
   def getAmendBankDetails(waypoint: String) =
     http("Get Amend Bank Details page")
-      .get(s"$baseUrl$route/bank-details?waypoints=$waypoint")
+      .get(s"$baseUrl$route/bank-account-details?waypoints=$waypoint")
       .header("Cookie", "mdtp=${mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postAmendBankDetails(waypoint: String) =
     http("Enter Amend Bank Details")
-      .post(s"$baseUrl$route/bank-details?waypoints=$waypoint")
+      .post(s"$baseUrl$route/bank-account-details?waypoints=$waypoint")
       .formParam("csrfToken", "${csrfToken}")
       .formParam("accountName", "Amended trader name")
       .formParam("bic", "ABCDEF2A")
