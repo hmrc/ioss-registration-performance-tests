@@ -1,5 +1,3 @@
-**This is a template README.md.  Be sure to update this with project specific content that describes your performance test project.**
-
 # ioss-registration-performance-tests
 
 Performance test suite for the `ioss-registration-frontend`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
