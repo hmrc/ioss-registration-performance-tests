@@ -39,7 +39,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postAlreadyRegisteredForIOSS =
     http("Post Already Registered for IOSS page")
       .post(s"$baseUrl$route/ioss-registered")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", false)
       .check(status.in(303))
       .check(header("Location").is(s"$route/selling-goods-outside-single-market"))
@@ -53,7 +53,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postSellingGoodsOutsideSingleMarket =
     http("Post Selling Goods Outside Single Market page")
       .post(s"$baseUrl$route/selling-goods-outside-single-market")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", true)
       .check(status.in(303))
       .check(header("Location").is(s"$route/goods-value"))
@@ -67,7 +67,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postGoodsValue =
     http("Post Goods Value page")
       .post(s"$baseUrl$route/goods-value")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", true)
       .check(status.in(303))
       .check(header("Location").is(s"$route/registered-for-vat-in-uk"))
@@ -81,7 +81,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postRegisteredForUKVAT =
     http("Post Registered for VAT in UK page")
       .post(s"$baseUrl$route/registered-for-vat-in-uk")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", true)
       .check(status.in(303))
       .check(header("Location").is(s"$route/ni-based"))
@@ -95,7 +95,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postNIBusiness =
     http("Post Northern Ireland Business page")
       .post(s"$baseUrl$route/ni-based")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", true)
       .check(status.in(303))
       .check(header("Location").is(s"$route/register-to-use-service"))
@@ -109,7 +109,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postRegisterToUseService =
     http("Post Register to Use Service page")
       .post(s"$baseUrl$route/register-to-use-service")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .check(status.in(303))
       .check(header("Location").is(s"$route/on-sign-in"))
 
@@ -196,14 +196,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getConfirmVatDetails =
     http("Get Confirm VAT Details page")
       .get(s"$baseUrl$route/confirm-vat-details")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postConfirmVatDetails =
     http("Confirm VAT Details")
       .post(s"$baseUrl$route/confirm-vat-details")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", "yes")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/have-uk-trading-name"))
@@ -211,14 +211,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getHasTradingName =
     http("Get Has Trading Name page")
       .get(s"$baseUrl$route/have-uk-trading-name")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postHasTradingName =
     http("Post Has Trading Name")
       .post(s"$baseUrl$route/have-uk-trading-name")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", "true")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/uk-trading-name/1"))
@@ -226,14 +226,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getTradingName(index: Int) =
     http("Get Trading Name page")
       .get(s"$baseUrl$route/uk-trading-name/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postTradingName(index: Int, tradingName: String) =
     http("Enter Trading Name")
       .post(s"$baseUrl$route/uk-trading-name/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", tradingName)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/add-uk-trading-name"))
@@ -241,14 +241,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAddTradingName =
     http("Get Add Trading Name page")
       .get(s"$baseUrl$route/add-uk-trading-name")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testAddTradingName(answer: Boolean) =
     http("Add Trading Name")
       .post(s"$baseUrl$route/add-uk-trading-name")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
 
@@ -264,14 +264,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getBusinessContactDetails =
     http("Get Business Contact Details page")
       .get(s"$baseUrl$route/business-contact-details")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postBusinessContactDetails =
     http("Enter Business Contact Details")
       .post(s"$baseUrl$route/business-contact-details")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("fullName", "Trader Name")
       .formParam("telephoneNumber", "012301230123")
       .formParam("emailAddress", "trader@testemail.com")
@@ -281,14 +281,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getBankDetails =
     http("Get Bank Details page")
       .get(s"$baseUrl$route/bank-account-details")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postBankDetails =
     http("Enter Bank Details")
       .post(s"$baseUrl$route/bank-account-details")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("accountName", "Trader name")
       .formParam("bic", "ABCDEF2A")
       .formParam("iban", "GB33BUKB20201555555555")
@@ -298,14 +298,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousOss =
     http("Get Is Previous Oss page")
       .get(s"$baseUrl$route/previous-oss")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postPreviousOss(index: Int) =
     http("Answer Previous Oss Page")
       .post(s"$baseUrl$route/previous-oss")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", "true")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/previous-country/$index"))
@@ -313,14 +313,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousCountry(index: Int) =
     http("Get previous country page")
       .get(s"$baseUrl$route/previous-country/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postPreviousCountry(countryIndex: Int, schemeIndex: Int, countryCode: String) =
     http("Enter previous country")
       .post(s"$baseUrl$route/previous-country/$countryIndex")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", countryCode)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/previous-scheme/$countryIndex/$schemeIndex"))
@@ -328,14 +328,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousScheme(countryIndex: Int, schemeIndex: Int) =
     http("Get Previous Scheme page")
       .get(s"$baseUrl$route/previous-scheme/$countryIndex/$schemeIndex")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testPreviousScheme(countryIndex: Int, schemeIndex: Int, schemeType: String) =
     http("Answer Previous Scheme")
       .post(s"$baseUrl$route/previous-scheme/$countryIndex/$schemeIndex")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", schemeType)
       .check(status.in(200, 303))
 
@@ -351,14 +351,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousOssSchemeNumber(countryIndex: Int, schemeIndex: Int) =
     http("Get Previous Oss Scheme number page")
       .get(s"$baseUrl$route/previous-oss-scheme-number/$countryIndex/$schemeIndex")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postPreviousOssSchemeNumber(countryIndex: Int, schemeIndex: Int, registrationNumber: String) =
     http("Enter Previous Oss Scheme Number")
       .post(s"$baseUrl$route/previous-oss-scheme-number/$countryIndex/$schemeIndex")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", registrationNumber)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/previous-scheme-answers/$countryIndex"))
@@ -366,14 +366,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousSchemeAnswers(index: Int) =
     http("Get Previous Scheme Answers page")
       .get(s"$baseUrl$route/previous-scheme-answers/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postPreviousSchemeAnswers(index: Int, answer: Boolean) =
     http("Post Previous Scheme Answers page")
       .post(s"$baseUrl$route/previous-scheme-answers/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/previous-schemes-overview"))
@@ -381,14 +381,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousSchemesOverview =
     http("Get Previous Schemes Overview page")
       .get(s"$baseUrl$route/previous-schemes-overview")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testPreviousSchemesOverview(answer: Boolean) =
     http("Previous Schemes Overview")
       .post(s"$baseUrl$route/previous-schemes-overview?incompletePromptShown=false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
 
@@ -404,14 +404,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousIossScheme(countryIndex: Int, schemeIndex: Int) =
     http("Get Previous IOSS Scheme page")
       .get(s"$baseUrl$route/previous-ioss-scheme/$countryIndex/$schemeIndex")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postPreviousIossScheme(countryIndex: Int, schemeIndex: Int, answer: Boolean) =
     http("Previous IOSS Scheme")
       .post(s"$baseUrl$route/previous-ioss-scheme/$countryIndex/$schemeIndex")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/previous-ioss-number/$countryIndex/$schemeIndex"))
@@ -419,30 +419,29 @@ object RegistrationRequests extends ServicesConfiguration {
   def getPreviousIossNumber(countryIndex: Int, schemeIndex: Int) =
     http("Get Previous IOSS number page")
       .get(s"$baseUrl$route/previous-ioss-number/$countryIndex/$schemeIndex")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
-  def postPreviousIossNumber(countryIndex: Int, schemeIndex: Int, iossNumber: String, intermediaryNumber: String) =
+  def postPreviousIossNumber(countryIndex: Int, schemeIndex: Int, iossNumber: String) =
     http("Previous IOSS Number")
       .post(s"$baseUrl$route/previous-ioss-number/$countryIndex/$schemeIndex")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("previousSchemeNumber", iossNumber)
-      .formParam("previousIntermediaryNumber", intermediaryNumber)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/previous-scheme-answers/$countryIndex"))
 
   def getIsTaxRegisteredInEu =
     http("Get Is Tax Registered in EU page")
       .get(s"$baseUrl$route/tax-in-eu")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postIsTaxRegisteredInEu(index: Int) =
     http("Answer Is Tax Registered in EU")
       .post(s"$baseUrl$route/tax-in-eu")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", "true")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/eu-tax/$index"))
@@ -450,14 +449,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getVatRegisteredInEuMemberState(index: Int) =
     http("Get Tax Registered in EU Member State page")
       .get(s"$baseUrl$route/eu-tax/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postVatRegisteredInEuMemberState(index: Int, countryCode: String) =
     http("Enter Tax Registered in EU Member State")
       .post(s"$baseUrl$route/eu-tax/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", countryCode)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/eu-fixed-establishment/$index"))
@@ -465,14 +464,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getHowDoYouOperate(index: Int) =
     http("Get How Do You Operate page")
       .get(s"$baseUrl$route/eu-fixed-establishment/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postHowDoYouOperate(index: Int) =
     http("Answer How Do You Operate Page")
       .post(s"$baseUrl$route/eu-fixed-establishment/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", true)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/registration-tax-type/$index"))
@@ -480,14 +479,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getRegistrationType(index: Int) =
     http("Get Registration Type page")
       .get(s"$baseUrl$route/registration-tax-type/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testRegistrationType(index: Int, registrationType: String) =
     http("Answer Registration Type Page")
       .post(s"$baseUrl$route/registration-tax-type/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", registrationType)
       .check(status.in(200, 303))
 
@@ -503,14 +502,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getEuVatNumber(index: Int) =
     http("Get EU VAT Number page")
       .get(s"$baseUrl$route/eu-vat-number/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postEuVatNumber(index: Int, euVatNumber: String) =
     http("Enter EU VAT Number")
       .post(s"$baseUrl$route/eu-vat-number/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", euVatNumber)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/eu-trading-name/$index"))
@@ -518,14 +517,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getFixedEuTradingName(index: Int) =
     http("Get Fixed Establishment Trading Name page")
       .get(s"$baseUrl$route/eu-trading-name/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postFixedEuTradingName(index: Int, tradingName: String) =
     http("Enter Fixed Eu Trading Name")
       .post(s"$baseUrl$route/eu-trading-name/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", tradingName)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/eu-fixed-establishment-address/$index"))
@@ -533,14 +532,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getFixedEstablishmentAddress(index: Int) =
     http("Get Fixed Establishment Address page")
       .get(s"$baseUrl$route/eu-fixed-establishment-address/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postFixedEstablishmentAddress(index: Int) =
     http("Enter Fixed Establishment Address")
       .post(s"$baseUrl$route/eu-fixed-establishment-address/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("line1", "line1")
       .formParam("line2", "line2")
       .formParam("townOrCity", "townOrCity")
@@ -551,28 +550,28 @@ object RegistrationRequests extends ServicesConfiguration {
   def getCheckTaxDetails(index: Int) =
     http("Get Check Tax Details page")
       .get(s"$baseUrl$route/check-tax-details/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postCheckTaxDetails(index: Int) =
     http("Submit Check EU VAT Details")
       .post(s"$baseUrl$route/check-tax-details/$index?incompletePromptShown=false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/add-tax-details"))
 
   def getAddTaxDetails =
     http("Get Add VAT Details page")
       .get(s"$baseUrl$route/add-tax-details")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testAddTaxDetails(answer: Boolean) =
     http("Answer Add EU VAT Details")
       .post(s"$baseUrl$route/add-tax-details?incompletePromptShown=false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
 
@@ -588,14 +587,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getEuTaxReference(index: Int) =
     http("Get EU Tax Reference page")
       .get(s"$baseUrl$route/eu-tax-identification-number/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postEuTaxReference(index: Int, taxReference: String) =
     http("Enter EU Tax Reference")
       .post(s"$baseUrl$route/eu-tax-identification-number/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", taxReference)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/eu-trading-name/$index"))
@@ -603,14 +602,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getWebsite(index: Int) =
     http(s"Get Website page $index")
       .get(s"$baseUrl$route/website-address/$index")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postWebsite(index: Int, website: String) =
     http(s"Enter website $index")
       .post(s"$baseUrl$route/website-address/$index")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", website)
       .check(status.in(303))
       .check(header("Location").is(s"$route/add-website-address"))
@@ -618,14 +617,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAddWebsite =
     http("Get Add Website page")
       .get(s"$baseUrl$route/add-website-address")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testAddWebsite(answer: Boolean) =
     http("Add Website")
       .post(s"$baseUrl$route/add-website-address")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
 
@@ -641,21 +640,21 @@ object RegistrationRequests extends ServicesConfiguration {
   def getCheckYourAnswers =
     http("Get Check Your Answers page")
       .get(s"$baseUrl$route/check-your-answers")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postCheckYourAnswers =
     http("Post Check Your Answers page")
       .post(s"$baseUrl$route/check-your-answers/false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/successful"))
 
   def getRegistrationSuccessful =
     http("Get Registration Successful page")
       .get(s"$baseUrl$route/successful")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(status.in(200))
 
   def getAmendJourney =
@@ -667,14 +666,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAmendAddTradingName =
     http("Get Amend Add Trading Name page")
       .get(s"$baseUrl$route/add-uk-trading-name?waypoints=change-your-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testAmendAddTradingName(answer: Boolean) =
     http("Add Trading Name")
       .post(s"$baseUrl$route/add-uk-trading-name?waypoints=change-your-registration")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
 
@@ -692,14 +691,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAmendTradingName(index: Int) =
     http("Get Trading Name page")
       .get(s"$baseUrl$route/uk-trading-name/3?waypoints=change-add-uk-trading-name%2Cchange-your-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postAmendTradingName(index: Int, tradingName: String) =
     http("Enter Trading Name")
       .post(s"$baseUrl$route/uk-trading-name/3?waypoints=change-add-uk-trading-name%2Cchange-your-registration")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", tradingName)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/add-uk-trading-name?waypoints=change-your-registration"))
@@ -707,14 +706,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAmendBusinessContactDetails(waypoint: String) =
     http("Get Amend Business Contact Details page")
       .get(s"$baseUrl$route/business-contact-details?waypoints=$waypoint")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postAmendBusinessContactDetails(waypoint: String) =
     http("Enter Amend Business Contact Details")
       .post(s"$baseUrl$route/business-contact-details?waypoints=$waypoint")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("fullName", "Amended Trader Name")
       .formParam("telephoneNumber", "012301230123")
       .formParam("emailAddress", "amendedtrader@testemail.com")
@@ -724,14 +723,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAmendBankDetails(waypoint: String) =
     http("Get Amend Bank Details page")
       .get(s"$baseUrl$route/bank-account-details?waypoints=$waypoint")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postAmendBankDetails(waypoint: String) =
     http("Enter Amend Bank Details")
       .post(s"$baseUrl$route/bank-account-details?waypoints=$waypoint")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("accountName", "Amended trader name")
       .formParam("bic", "ABCDEF2A")
       .formParam("iban", "GB33BUKB20201555555555")
@@ -741,21 +740,21 @@ object RegistrationRequests extends ServicesConfiguration {
   def getChangeYourRegistration =
     http("Get Change Your Registration page")
       .get(s"$baseUrl$route/change-your-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postChangeYourRegistration =
     http("Post Change Your Registration page")
       .post(s"$baseUrl$route/change-your-registration?incompletePrompt=false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/successful-amend"))
 
   def getSuccessfulAmend =
     http("Get Successful Amend page")
       .get(s"$baseUrl$route/successful-amend")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(status.in(200))
 
   def getRejoinJourney =
@@ -767,14 +766,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getRejoinAddTradingName =
     http("Get Rejoin Add Trading Name page")
       .get(s"$baseUrl$route/add-uk-trading-name?waypoints=rejoin-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def testRejoinAddTradingName(answer: Boolean) =
     http("Rejoin Add Trading Name")
       .post(s"$baseUrl$route/add-uk-trading-name?waypoints=rejoin-registration")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", answer)
       .check(status.in(200, 303))
 
@@ -792,14 +791,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getRejoinTradingName(index: Int) =
     http("Get Rejoin Trading Name page")
       .get(s"$baseUrl$route/uk-trading-name/3?waypoints=change-add-uk-trading-name%2Crejoin-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postRejoinTradingName(index: Int, tradingName: String) =
     http("Rejoin Enter Trading Name")
       .post(s"$baseUrl$route/uk-trading-name/3?waypoints=change-add-uk-trading-name%2Crejoin-registration")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", tradingName)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/add-uk-trading-name?waypoints=rejoin-registration"))
@@ -807,34 +806,34 @@ object RegistrationRequests extends ServicesConfiguration {
   def getRejoinRegistration =
     http("Get Rejoin Registration page")
       .get(s"$baseUrl$route/rejoin-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postRejoinRegistration =
     http("Post Rejoin Registration page")
       .post(s"$baseUrl$route/rejoin-registration?incompletePrompt=false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/successful-rejoin"))
 
   def getSuccessfulRejoin =
     http("Get Successful Rejoin page")
       .get(s"$baseUrl$route/successful-rejoin")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(status.in(200))
 
   def getChangePreviousRegistrations =
     http("Get Change Previous Registrations page")
       .get(s"$baseUrl$route/change-your-previous-registrations?waypoints=change-your-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postChangePreviousRegistrations(selection: String) =
     http("Answer Change Previous Registrations Page")
       .post(s"$baseUrl$route/change-your-previous-registrations?waypoints=change-your-registration")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", selection)
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/start-amend-previous-journey/?waypoints=change-your-registration"))
@@ -842,14 +841,14 @@ object RegistrationRequests extends ServicesConfiguration {
   def getChangeAPreviousRegistration =
     http("Get Change A Previous Registration page")
       .get(s"$baseUrl$route/change-a-previous-registration")
-      .header("Cookie", "mdtp=${mdtpCookie}")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
   def postChangeAPreviousRegistration =
     http("Post Change A Previous Registration page")
       .post(s"$baseUrl$route/change-your-registration?waypoints=change-a-previous-registration&incompletePrompt=false")
-      .formParam("csrfToken", "${csrfToken}")
+      .formParam("csrfToken", "#{csrfToken}")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/successful-amend"))
 
