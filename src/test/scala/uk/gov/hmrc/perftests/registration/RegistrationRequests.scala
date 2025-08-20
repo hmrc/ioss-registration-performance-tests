@@ -116,11 +116,13 @@ object RegistrationRequests extends ServicesConfiguration {
   def getAuthorityWizard =
     http("Get Authority Wizard page")
       .get(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200, 303))
 
   def postAuthorityWizard =
     http("Enter Auth login credentials ")
       .post(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("authorityId", "")
       .formParam("gatewayToken", "")
       .formParam("credentialStrength", "strong")
@@ -139,6 +141,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postAuthorityWizardWithIOSSEnrolment(iossNumber: String) =
     http("Enter Auth login credentials ")
       .post(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("authorityId", "")
       .formParam("gatewayToken", "")
       .formParam("credentialStrength", "strong")
@@ -161,6 +164,7 @@ object RegistrationRequests extends ServicesConfiguration {
   def postAuthorityWizardWithMultipleIOSSEnrolments =
     http("Enter Auth login credentials for multiple IOSS Numbers")
       .post(loginUrl + s"/auth-login-stub/gg-sign-in")
+      .formParam("csrfToken", "#{csrfToken}")
       .formParam("authorityId", "")
       .formParam("gatewayToken", "")
       .formParam("credentialStrength", "strong")
