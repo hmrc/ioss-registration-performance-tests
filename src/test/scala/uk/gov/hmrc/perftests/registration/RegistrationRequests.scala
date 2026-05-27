@@ -842,6 +842,12 @@ object RegistrationRequests extends ServicesConfiguration {
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/start-amend-previous-journey/?waypoints=change-your-registration"))
 
+  def getStartAmendPreviousJourney =
+    http("Get Start Amend Previous Journey")
+      .get(s"$baseUrl$route/start-amend-previous-journey/?waypoints=change-your-registration")
+      .header("Cookie", "mdtp=#{mdtpCookie}")
+      .check(status.in(200, 303))
+
   def getChangeAPreviousRegistration =
     http("Get Change A Previous Registration page")
       .get(s"$baseUrl$route/change-a-previous-registration")
