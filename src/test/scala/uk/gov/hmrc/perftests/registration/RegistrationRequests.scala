@@ -210,20 +210,20 @@ object RegistrationRequests extends ServicesConfiguration {
       .formParam("csrfToken", "#{csrfToken}")
       .formParam("value", "yes")
       .check(status.in(200, 303))
-      .check(header("Location").is(s"$route/have-uk-trading-name"))
+      .check(header("Location").is(s"$route/have-no-other-uk-trading-names"))
 
-  def getHasTradingName =
+  def getOnlyTradingName =
     http("Get Has Trading Name page")
-      .get(s"$baseUrl$route/have-uk-trading-name")
+      .get(s"$baseUrl$route/have-no-other-uk-trading-names")
       .header("Cookie", "mdtp=#{mdtpCookie}")
       .check(css(inputSelectorByName("csrfToken"), "value").saveAs("csrfToken"))
       .check(status.in(200))
 
-  def postHasTradingName =
+  def postOnlyTradingName =
     http("Post Has Trading Name")
-      .post(s"$baseUrl$route/have-uk-trading-name")
+      .post(s"$baseUrl$route/have-no-other-uk-trading-names")
       .formParam("csrfToken", "#{csrfToken}")
-      .formParam("value", "true")
+      .formParam("value", "false")
       .check(status.in(200, 303))
       .check(header("Location").is(s"$route/uk-trading-name/1"))
 
